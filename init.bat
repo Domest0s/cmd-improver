@@ -2,6 +2,8 @@
 
 ECHO Patching cmd ...
 
+PROMPT $E[32mJohn$S$E[37m$P$G $E[0m
+
 :: ********* COLORS definition *********
 
 SET cDef=[0m
@@ -20,13 +22,16 @@ PROMPT $E[32mJohn $E[97m$P$G$E[0m
 
 
 :: statement (ECHO ^| set /p=mytext) prints mytext without linefeed
+:: 2>NUL is used to supress annoying File Not Found error message from STDERR
 DOSKEY ls=(ECHO ^| set /p=%%cCyan%%) ^
-& (DIR /B /A:D $*) ^
+& (DIR /B /P /A:D $* 2^>NUL) ^
 & (ECHO ^| set /p=%%cYellow%%) ^
-& (for %%i in (*) do @echo %%i) ^
+& (DIR /B /P /A:-D $* 2^>NUL) ^
 & (ECHO ^| set/p=%%cDef%%)
 
+DOSKEY findfile = dir /b/s $*
 DOSKEY pwd=ECHO %%CD%%
+DOSKEY np = notepad++.exe $*
 
 :: change starting directory 
 CD /D D:\workdir
